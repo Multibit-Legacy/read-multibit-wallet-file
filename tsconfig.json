@@ -1,0 +1,15 @@
+{
+  "version": "1.7.5",
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "sourceMap": true
+  },
+  "filesGlob": [
+    "src/*.ts"
+  ]
+}
