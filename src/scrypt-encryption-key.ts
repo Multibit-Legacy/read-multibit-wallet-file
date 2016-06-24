@@ -1,16 +1,26 @@
 var ByteBuffer = require('bytebuffer');
-var scrypt = require('scrypt-hash');
+var scrypt = require('scrypt-async');
 
 const DEFAULT_N = 16384;
 const DEFAULT_R = 8;
 const DEFAULT_P = 1;
-const DEFAULT_MEMORY = 32;
+const DEFAULT_DERIVED_KEY_LENGTH = 32;
 
 const DEFAULT_SALT = ByteBuffer.wrap([
   0xac, 0x35, 0x72, 0xb2, 0x47, 0xc6, 0x87, 0x32
 ]);
 
+interface Math {
+  log2(x: number): number;
+}
+declare var Math: Math;
+
 export class ScryptEncryptionKey {
+  private salt: ByteBuffer;
+  private n: number;
+  private r: number;
+  private p: number;
+  private derivedKeyLength: number;
 
   private _passwordBuffer: ByteBuffer;
   private get passwordBuffer(): ByteBuffer {
@@ -26,19 +36,18 @@ export class ScryptEncryptionKey {
     }
     return this._passwordBuffer;
   }
-  
+
   private _keyPromise: Promise<ByteBuffer>;
   public get keyPromise() {
     if (!this._keyPromise) {
       this._keyPromise = new Promise((resolve, reject) => {
-        scrypt(this.passwordBuffer.toBuffer(), this.salt.toBuffer(), this.n,
-          this.r, this.p, this.memory,
-          (err, hash) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(ByteBuffer.wrap(hash));
-            }
+        var pw = new Uint8Array(this.passwordBuffer.toBuffer());
+        var salt = new Uint8Array(this.salt.toBuffer());
+        scrypt(pw, salt,
+          Math.log2(this.n), this.r, this.derivedKeyLength,
+          (hash) => {
+            console.log(hash);
+            resolve(ByteBuffer.wrap(hash));
           }
         );
       });
@@ -46,13 +55,13 @@ export class ScryptEncryptionKey {
     return this._keyPromise;
   }
 
-  constructor(private password: string, private salt?: ByteBuffer,
-              private n?: number, private r?: number, private p?: number,
-              private memory?: number) {
-    this.salt = this.salt || DEFAULT_SALT;
-    this.n = this.n || DEFAULT_N;
-    this.r = this.r || DEFAULT_R;
-    this.p = this.p || DEFAULT_P;
-    this.memory = this.memory || DEFAULT_MEMORY;
+  constructor(private password: string, salt?: ByteBuffer,
+              n?: number, r?: number, p?: number,
+              derivedKeyLength?: number) {
+    this.salt = salt || DEFAULT_SALT;
+    this.n = n || DEFAULT_N;
+    this.r = r || DEFAULT_R;
+    this.p = p || DEFAULT_P;
+    this.derivedKeyLength = derivedKeyLength || DEFAULT_DERIVED_KEY_LENGTH;
   }
 }

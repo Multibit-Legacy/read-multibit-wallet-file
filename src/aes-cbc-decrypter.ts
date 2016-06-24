@@ -16,10 +16,10 @@ export class Decrypter {
         var decrypted = new ByteBuffer(data.capacity());
         decrypted.limit = 0;
         while (data.remaining()) {
-          var fragment = data.slice(data.offset, data.offset + FRAGMENT_SIZE);
-          var d = aesCbc.decrypt(fragment.toBuffer());
+          var fragment = new Uint8Array(data.slice(data.offset, data.offset + FRAGMENT_SIZE).toBuffer());
+          var d = aesCbc.decrypt(fragment);
           decrypted.limit += FRAGMENT_SIZE;
-          decrypted.append(d);
+          decrypted.append(ByteBuffer.wrap(d));
           data.skip(FRAGMENT_SIZE);
         }
         decrypted.reset();
@@ -31,11 +31,14 @@ export class Decrypter {
   private initialize(iv: ByteBuffer): Promise<any> {
     return this.key.keyPromise
       .then((key: ByteBuffer) => {
-        return new aesjs.ModeOfOperation.cbc(key.toBuffer(), iv.toBuffer());
+        var keyArray = new Uint8Array(key.toBuffer());
+        var ivArray = new Uint8Array(iv.toBuffer());
+        return new aesjs.ModeOfOperation.cbc(keyArray, ivArray);
       });
   }
 
   private removePadding(padddedMessage: ByteBuffer): ByteBuffer {
-    return ByteBuffer.wrap(pkcs7.unpad(padddedMessage.toBuffer()));
+    return ByteBuffer.wrap(
+      pkcs7.unpad(new Uint8Array(padddedMessage.toBuffer())));
   }
 }
