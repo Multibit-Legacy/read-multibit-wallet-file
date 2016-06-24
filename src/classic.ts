@@ -1,8 +1,9 @@
+///<reference path="../build/wallet.d.ts"/>
 ///<reference path="../typings/index.d.ts"/>
 
 import {ScryptEncryptionKey} from "./scrypt-encryption-key";
 import {Decrypter} from "./aes-cbc-decrypter";
-var Wallet = require('../protocol-buffers/wallet').wallet.Wallet;
+var Wallet = require('../build/wallet').wallet.Wallet;
 var ByteBuffer = require('bytebuffer');
 
 
@@ -12,7 +13,6 @@ var decrypter = new Decrypter(new ScryptEncryptionKey(PASSWORD));
 
 document.getElementById('start-import').addEventListener('click', () => {
   chrome.fileSystem.chooseEntry({type: 'openFile'}, function (entry: FileEntry) {
-    console.log(entry);
     chrome.fileSystem.getDisplayPath(entry, function (path) {
       console.log(path)
     });
@@ -21,10 +21,10 @@ document.getElementById('start-import').addEventListener('click', () => {
       var reader = new FileReader();
       reader.onloadend = (e: any) => {
         var pb = ByteBuffer.wrap(e.target.result);
-        var wallet = Wallet.decode(e.target.result);
-        var keys = wallet.getKey();
+        var wallet: MultibitWallet.Wallet = Wallet.decode(e.target.result);
+        var keys: Array<MultibitWallet.Key> = wallet.getKey();
 
-        console.assert(keys && keys.length, 'One or more keys should exist');
+        console.assert(keys.length !== 0, 'One or more keys should exist');
 
         var keyPromises: Array<Promise<ByteBuffer>> = [];
 
@@ -36,10 +36,9 @@ document.getElementById('start-import').addEventListener('click', () => {
             var epk = encryptedKey.getEncryptedPrivateKey();
             keyPromises.push(decrypter.decrypt(epk, iv));
           } else {
-            keyPromises.push(key.getPublicKey());
+            keyPromises.push(Promise.resolve(key.getPublicKey()));
           }
         });
-
 
         Promise.all(keyPromises)
           .then((keys: Array<ByteBuffer>) => {

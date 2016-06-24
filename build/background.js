@@ -4,4 +4,3 @@ chrome.app.runtime.onLaunched.addListener(function () {
         bounds: { width: 620, height: 500 }
     });
 });
-//# sourceMappingURL=background.js.map

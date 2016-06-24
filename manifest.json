@@ -4,7 +4,7 @@
   "description": "Read private keys from you old wallet files and sweep the funds into your KeepKey",
   "manifest_version": 2,
   "icons": {
-    "128": "broom-icon.png"
+    "128": "images/broom-icon.png"
   },
   "app": {
     "background": {

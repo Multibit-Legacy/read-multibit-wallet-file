@@ -46,7 +46,6 @@ export class ScryptEncryptionKey {
         scrypt(pw, salt,
           Math.log2(this.n), this.r, this.derivedKeyLength,
           (hash) => {
-            console.log(hash);
             resolve(ByteBuffer.wrap(hash));
           }
         );
