@@ -3,25 +3,25 @@
  * All Rights Reserved
  */
 
-var browserify = require('browserify');
-var gulp = require('gulp');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var zip = require('gulp-zip');
 var args = require('yargs').argv;
+var browserify = require('browserify');
+var buffer = require('vinyl-buffer');
+var del = require('del');
+var gulp = require('gulp');
+var gulpif = require('gulp-if');
+var gulpTypings = require("gulp-typings");
+var pbjs = require('gulp-pbjs');
+var source = require('vinyl-source-stream');
 var rename = require('gulp-rename');
 var replace = require('gulp-replace');
-var pbjs = require('gulp-pbjs');
-var gulpif = require('gulp-if');
-var uglify = require('gulp-uglify');
 var proto2ts = require('proto2typescript');
 var through = require('through2');
-var gulpTypings = require("gulp-typings");
-//
+var ts = require('gulp-typescript');
+var uglify = require('gulp-uglify');
+var zip = require('gulp-zip');
+
 var versionedFiles = ['manifest.json', 'package.json'];
 var environment = args.environment || 'local';
-//
-var ts = require('gulp-typescript');
 
 gulp.task('clean', function (cb) {
   del([
