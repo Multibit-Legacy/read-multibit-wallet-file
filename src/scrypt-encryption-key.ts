@@ -1,4 +1,4 @@
-var ByteBuffer = require('bytebuffer');
+import * as ByteBuffer from "bytebuffer";
 var scrypt = require('scrypt-async');
 
 const DEFAULT_N = 16384;
@@ -6,9 +6,9 @@ const DEFAULT_R = 8;
 const DEFAULT_P = 1;
 const DEFAULT_DERIVED_KEY_LENGTH = 32;
 
-const DEFAULT_SALT = ByteBuffer.wrap([
+const DEFAULT_SALT = ByteBuffer.wrap(new Uint8Array([
   0xac, 0x35, 0x72, 0xb2, 0x47, 0xc6, 0x87, 0x32
-]);
+]));
 
 interface Math {
   log2(x: number): number;
@@ -32,7 +32,7 @@ export class ScryptEncryptionKey {
         bytes.push((charCode & 0xFF00) >> 8);
         bytes.push(charCode & 0xFF);
       }
-      this._passwordBuffer = ByteBuffer.wrap(bytes);
+      this._passwordBuffer = ByteBuffer.wrap(new Uint8Array(bytes));
     }
     return this._passwordBuffer;
   }
@@ -43,9 +43,10 @@ export class ScryptEncryptionKey {
       this._keyPromise = new Promise((resolve, reject) => {
         var pw = new Uint8Array(this.passwordBuffer.toBuffer());
         var salt = new Uint8Array(this.salt.toBuffer());
-        scrypt(pw, salt,
+        scrypt(
+          pw, salt,
           Math.log2(this.n), this.r, this.derivedKeyLength,
-          (hash) => {
+          (hash: any) => {
             resolve(ByteBuffer.wrap(hash));
           }
         );

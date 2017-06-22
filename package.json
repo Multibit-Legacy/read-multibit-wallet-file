@@ -15,16 +15,27 @@
   "bugs": {
     "url": "https://github.com/keepkey/read-multibit-wallet-file/issues"
   },
+  "bin": {
+    "mbexport": "build/mbexport.js"
+  },
   "homepage": "https://github.com/keepkey/read-multibit-wallet-file#readme",
   "dependencies": {
     "aes-js": "^2.0.0",
+    "bcoin": "^1.0.0-beta.12",
     "bytebuffer": "^5.0.1",
+    "commander": "^2.9.0",
     "lodash": "^4.13.1",
     "pkcs7": "^0.2.3",
     "protobufjs": "^5.0.1",
     "scrypt-async": "^1.2.0"
   },
   "devDependencies": {
+    "@types/bytebuffer": "^5.0.33",
+    "@types/commander": "^2.9.1",
+    "@types/node": "^7.0.31",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "del": "^2.2.1",
     "gulp": "^3.9.1",
@@ -32,13 +43,13 @@
     "gulp-pbjs": "git+https://github.com/keepkey/gulp-pbjs.git",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
-    "gulp-typescript": "^2.13.6",
-    "gulp-typings": "^2.0.0",
+    "gulp-typescript": "^3.1.7",
     "gulp-uglify": "^1.5.4",
     "gulp-zip": "^3.2.0",
+    "level-js": "^2.2.4",
     "proto2typescript": "^2.2.0",
     "through2": "^2.0.1",
-    "typings": "^1.3.0",
+    "typescript": "^2.3.4",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "yargs": "^4.7.1"

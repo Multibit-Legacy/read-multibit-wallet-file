@@ -1,15 +1,20 @@
 {
-  "version": "1.7.5",
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
     "declaration": false,
-    "noImplicitAny": false,
     "removeComments": true,
     "noLib": false,
-    "sourceMap": true
-  },
-  "filesGlob": [
-    "src/*.ts"
-  ]
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es6"],
+    "sourceMap": true,
+    "pretty": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitUseStrict": false,
+    "noFallthroughCasesInSwitch": false
+  }
 }

@@ -1,44 +1,40 @@
 import {ScryptEncryptionKey} from "./scrypt-encryption-key";
+import crypto = require('crypto');
+import * as ByteBuffer from "bytebuffer";
+import {Decipher} from "crypto";
+import ScryptParameters = MultibitWallet.ScryptParameters;
 
-var ByteBuffer = require('bytebuffer');
-var aesjs = require('aes-js');
+// var aesjs = require('aes-js');
 var pkcs7 = require('pkcs7');
 
 const FRAGMENT_SIZE = 16;
 
 export class Decrypter {
-  constructor(private key: ScryptEncryptionKey) {
+  public static factory(passphrase: string, scryptParameters: ScryptParameters): Decrypter {
+    let key: ScryptEncryptionKey = new ScryptEncryptionKey(passphrase, scryptParameters.getSalt());
+    return new Decrypter(key);
+  }
+
+  private constructor(private key: ScryptEncryptionKey) {
   }
 
   public decrypt(data: ByteBuffer, iv: ByteBuffer): Promise<ByteBuffer> {
     return this.initialize(iv)
-      .then((aesCbc): ByteBuffer => {
-        var decrypted = new ByteBuffer(data.capacity());
-        decrypted.limit = 0;
-        while (data.remaining()) {
-          var fragment = new Uint8Array(data.slice(data.offset, data.offset + FRAGMENT_SIZE).toBuffer());
-          var d = aesCbc.decrypt(fragment);
-          decrypted.limit += FRAGMENT_SIZE;
-          decrypted.append(ByteBuffer.wrap(d));
-          data.skip(FRAGMENT_SIZE);
-        }
-        decrypted.reset();
+      .then((aesCbc: Decipher) => {
+        let decrypted: Buffer = Buffer.concat([
+          aesCbc.update(Buffer.from(data.toBuffer())),
+          aesCbc.final()
+        ]);
 
-        return this.removePadding(decrypted);
+        return ByteBuffer.wrap(decrypted);
       });
   }
 
-  private initialize(iv: ByteBuffer): Promise<any> {
+  private initialize(iv: ByteBuffer): Promise<Decipher> {
     return this.key.keyPromise
-      .then((key: ByteBuffer) => {
-        var keyArray = new Uint8Array(key.toBuffer());
-        var ivArray = new Uint8Array(iv.toBuffer());
-        return new aesjs.ModeOfOperation.cbc(keyArray, ivArray);
-      });
-  }
-
-  private removePadding(padddedMessage: ByteBuffer): ByteBuffer {
-    return ByteBuffer.wrap(
-      pkcs7.unpad(new Uint8Array(padddedMessage.toBuffer())));
+      .then<Decipher>((key: ByteBuffer) => {
+        return crypto.createDecipheriv('aes-256-cbc', key.toBuffer(), iv.toBuffer());
+      })
+      .catch(() => console.log('whoa. fail.'));
   }
 }
