@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "description": "Export the private keeys or wallet words from Multibit wallet files",
   "main": "build/mbexport",
-  "scripts": {
-    "postinstall": "gulp build"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/keepkey/read-multibit-wallet-file.git"
