@@ -1,10 +1,10 @@
 {
-  "name": "read-multibit-wallet-file",
+  "name": "mbexport",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Export the private keeys or wallet words from Multibit wallet files",
+  "main": "build/mbexport",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "gulp build"
   },
   "repository": {
     "type": "git",
@@ -16,16 +16,13 @@
     "url": "https://github.com/keepkey/read-multibit-wallet-file/issues"
   },
   "bin": {
-    "mbexport": "build/mbexport.js"
+    "mbexport": "build/mbexport"
   },
   "homepage": "https://github.com/keepkey/read-multibit-wallet-file#readme",
   "dependencies": {
-    "aes-js": "^2.0.0",
     "bcoin": "^1.0.0-beta.12",
     "bytebuffer": "^5.0.1",
     "commander": "^2.9.0",
-    "lodash": "^4.13.1",
-    "pkcs7": "^0.2.3",
     "prompt": "^1.0.0",
     "protobufjs": "^5.0.1",
     "scrypt-async": "^1.2.0"
@@ -37,16 +34,14 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babelify": "^7.3.0",
-    "browserify": "^13.0.1",
     "del": "^2.2.1",
     "gulp": "^3.9.1",
+    "gulp-chmod": "^2.0.0",
     "gulp-if": "^2.0.1",
     "gulp-pbjs": "git+https://github.com/keepkey/gulp-pbjs.git",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-typescript": "^3.1.7",
-    "gulp-uglify": "^1.5.4",
-    "gulp-zip": "^3.2.0",
     "level-js": "^2.2.4",
     "proto2typescript": "^2.2.0",
     "through2": "^2.0.1",

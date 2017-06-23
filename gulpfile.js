@@ -4,8 +4,8 @@
  */
 
 let args = require('yargs').argv;
-let browserify = require('browserify');
 let buffer = require('vinyl-buffer');
+let chmod = require('gulp-chmod');
 let del = require('del');
 let gulp = require('gulp');
 let gulpif = require('gulp-if');
@@ -16,8 +16,6 @@ let replace = require('gulp-replace');
 let proto2ts = require('proto2typescript');
 let through = require('through2');
 let ts = require('gulp-typescript');
-let uglify = require('gulp-uglify');
-let zip = require('gulp-zip');
 
 let tsconfig = require('./tsconfig.json').compilerOptions;
 
@@ -74,20 +72,6 @@ gulp.task('typescript', ['wallet.d.ts'], function () {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('browserify', ['typescript', 'protocolBuffers'], function () {
-  return browserify('./build/mbexport.js', {
-    noParse: ['aes-js']
-  })
-    .bundle()
-    .pipe(source('mbexport.js'))
-    .pipe(buffer()) // <----- convert from streaming to buffered vinyl file object
-    .pipe(gulpif(environment !== 'local', uglify({
-      preserveComments: "license"
-    })))
-    .pipe(gulp.dest('dist'));
-});
-
-
 gulp.task('cli', function() {
 
 });
@@ -110,6 +94,11 @@ gulp.task('bumpMajor', function () {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('build', ['browserify']);
+gulp.task('build', ['typescript', 'protocolBuffers'], function() {
+  return gulp.src('build/mbexport.js')
+    .pipe(chmod(0o755))
+    .pipe(rename('mbexport'))
+    .pipe(gulp.dest('build'));
+});
 
 module.exports = gulp;
