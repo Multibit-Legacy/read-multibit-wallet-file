@@ -12,7 +12,7 @@ prompt.delimiter = '';
 var Wallet = require('../build/wallet').wallet.Wallet;
 var fileName;
 commander
-    .version('0.0.1')
+    .version(require('../package.json').version)
     .arguments('<wallet-file>')
     .action(function (file) {
     fileName = file;
