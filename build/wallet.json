@@ -1,0 +1,721 @@
+{
+    "package": "wallet",
+    "options": {
+        "java_package": "org.bitcoinj.wallet",
+        "java_outer_classname": "Protos"
+    },
+    "messages": [
+        {
+            "name": "PeerAddress",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "ip_address",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "type": "uint32",
+                    "name": "port",
+                    "id": 2
+                },
+                {
+                    "rule": "required",
+                    "type": "uint64",
+                    "name": "services",
+                    "id": 3
+                }
+            ]
+        },
+        {
+            "name": "EncryptedData",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "initialisation_vector",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "encrypted_private_key",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "DeterministicKey",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "chain_code",
+                    "id": 1
+                },
+                {
+                    "rule": "repeated",
+                    "type": "uint32",
+                    "name": "path",
+                    "id": 2
+                },
+                {
+                    "rule": "optional",
+                    "type": "uint32",
+                    "name": "issued_subkeys",
+                    "id": 3
+                },
+                {
+                    "rule": "optional",
+                    "type": "uint32",
+                    "name": "lookahead_size",
+                    "id": 4
+                },
+                {
+                    "rule": "optional",
+                    "type": "bool",
+                    "name": "isFollowing",
+                    "id": 5
+                },
+                {
+                    "rule": "optional",
+                    "type": "uint32",
+                    "name": "sigsRequiredToSpend",
+                    "id": 6,
+                    "options": {
+                        "default": 1
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Key",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "Type",
+                    "name": "type",
+                    "id": 1
+                },
+                {
+                    "rule": "optional",
+                    "type": "bytes",
+                    "name": "secret_bytes",
+                    "id": 2
+                },
+                {
+                    "rule": "optional",
+                    "type": "EncryptedData",
+                    "name": "encrypted_data",
+                    "id": 6
+                },
+                {
+                    "rule": "optional",
+                    "type": "bytes",
+                    "name": "public_key",
+                    "id": 3
+                },
+                {
+                    "rule": "optional",
+                    "type": "string",
+                    "name": "label",
+                    "id": 4
+                },
+                {
+                    "rule": "optional",
+                    "type": "int64",
+                    "name": "creation_timestamp",
+                    "id": 5
+                },
+                {
+                    "rule": "optional",
+                    "type": "DeterministicKey",
+                    "name": "deterministic_key",
+                    "id": 7
+                },
+                {
+                    "rule": "optional",
+                    "type": "bytes",
+                    "name": "deterministic_seed",
+                    "id": 8
+                },
+                {
+                    "rule": "optional",
+                    "type": "EncryptedData",
+                    "name": "encrypted_deterministic_seed",
+                    "id": 9
+                }
+            ],
+            "enums": [
+                {
+                    "name": "Type",
+                    "values": [
+                        {
+                            "name": "ORIGINAL",
+                            "id": 1
+                        },
+                        {
+                            "name": "ENCRYPTED_SCRYPT_AES",
+                            "id": 2
+                        },
+                        {
+                            "name": "DETERMINISTIC_MNEMONIC",
+                            "id": 3
+                        },
+                        {
+                            "name": "DETERMINISTIC_KEY",
+                            "id": 4
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Script",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "program",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "type": "int64",
+                    "name": "creation_timestamp",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "TransactionInput",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "transaction_out_point_hash",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "type": "uint32",
+                    "name": "transaction_out_point_index",
+                    "id": 2
+                },
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "script_bytes",
+                    "id": 3
+                },
+                {
+                    "rule": "optional",
+                    "type": "uint32",
+                    "name": "sequence",
+                    "id": 4
+                },
+                {
+                    "rule": "optional",
+                    "type": "int64",
+                    "name": "value",
+                    "id": 5
+                }
+            ]
+        },
+        {
+            "name": "TransactionOutput",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "int64",
+                    "name": "value",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "script_bytes",
+                    "id": 2
+                },
+                {
+                    "rule": "optional",
+                    "type": "bytes",
+                    "name": "spent_by_transaction_hash",
+                    "id": 3
+                },
+                {
+                    "rule": "optional",
+                    "type": "int32",
+                    "name": "spent_by_transaction_index",
+                    "id": 4
+                }
+            ]
+        },
+        {
+            "name": "TransactionConfidence",
+            "fields": [
+                {
+                    "rule": "optional",
+                    "type": "Type",
+                    "name": "type",
+                    "id": 1
+                },
+                {
+                    "rule": "optional",
+                    "type": "int32",
+                    "name": "appeared_at_height",
+                    "id": 2
+                },
+                {
+                    "rule": "optional",
+                    "type": "bytes",
+                    "name": "overriding_transaction",
+                    "id": 3
+                },
+                {
+                    "rule": "optional",
+                    "type": "int32",
+                    "name": "depth",
+                    "id": 4
+                },
+                {
+                    "rule": "repeated",
+                    "type": "PeerAddress",
+                    "name": "broadcast_by",
+                    "id": 6
+                },
+                {
+                    "rule": "optional",
+                    "type": "Source",
+                    "name": "source",
+                    "id": 7
+                }
+            ],
+            "enums": [
+                {
+                    "name": "Type",
+                    "values": [
+                        {
+                            "name": "UNKNOWN",
+                            "id": 0
+                        },
+                        {
+                            "name": "BUILDING",
+                            "id": 1
+                        },
+                        {
+                            "name": "PENDING",
+                            "id": 2
+                        },
+                        {
+                            "name": "NOT_IN_BEST_CHAIN",
+                            "id": 3
+                        },
+                        {
+                            "name": "DEAD",
+                            "id": 4
+                        }
+                    ]
+                },
+                {
+                    "name": "Source",
+                    "values": [
+                        {
+                            "name": "SOURCE_UNKNOWN",
+                            "id": 0
+                        },
+                        {
+                            "name": "SOURCE_NETWORK",
+                            "id": 1
+                        },
+                        {
+                            "name": "SOURCE_SELF",
+                            "id": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Transaction",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "int32",
+                    "name": "version",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "hash",
+                    "id": 2
+                },
+                {
+                    "rule": "optional",
+                    "type": "Pool",
+                    "name": "pool",
+                    "id": 3
+                },
+                {
+                    "rule": "optional",
+                    "type": "uint32",
+                    "name": "lock_time",
+                    "id": 4
+                },
+                {
+                    "rule": "optional",
+                    "type": "int64",
+                    "name": "updated_at",
+                    "id": 5
+                },
+                {
+                    "rule": "repeated",
+                    "type": "TransactionInput",
+                    "name": "transaction_input",
+                    "id": 6
+                },
+                {
+                    "rule": "repeated",
+                    "type": "TransactionOutput",
+                    "name": "transaction_output",
+                    "id": 7
+                },
+                {
+                    "rule": "repeated",
+                    "type": "bytes",
+                    "name": "block_hash",
+                    "id": 8
+                },
+                {
+                    "rule": "repeated",
+                    "type": "int32",
+                    "name": "block_relativity_offsets",
+                    "id": 11
+                },
+                {
+                    "rule": "optional",
+                    "type": "TransactionConfidence",
+                    "name": "confidence",
+                    "id": 9
+                },
+                {
+                    "rule": "optional",
+                    "type": "Purpose",
+                    "name": "purpose",
+                    "id": 10,
+                    "options": {
+                        "default": "UNKNOWN"
+                    }
+                },
+                {
+                    "rule": "optional",
+                    "type": "ExchangeRate",
+                    "name": "exchange_rate",
+                    "id": 12
+                },
+                {
+                    "rule": "optional",
+                    "type": "string",
+                    "name": "memo",
+                    "id": 13
+                }
+            ],
+            "enums": [
+                {
+                    "name": "Pool",
+                    "values": [
+                        {
+                            "name": "UNSPENT",
+                            "id": 4
+                        },
+                        {
+                            "name": "SPENT",
+                            "id": 5
+                        },
+                        {
+                            "name": "INACTIVE",
+                            "id": 2
+                        },
+                        {
+                            "name": "DEAD",
+                            "id": 10
+                        },
+                        {
+                            "name": "PENDING",
+                            "id": 16
+                        },
+                        {
+                            "name": "PENDING_INACTIVE",
+                            "id": 18
+                        }
+                    ]
+                },
+                {
+                    "name": "Purpose",
+                    "values": [
+                        {
+                            "name": "UNKNOWN",
+                            "id": 0
+                        },
+                        {
+                            "name": "USER_PAYMENT",
+                            "id": 1
+                        },
+                        {
+                            "name": "KEY_ROTATION",
+                            "id": 2
+                        },
+                        {
+                            "name": "ASSURANCE_CONTRACT_CLAIM",
+                            "id": 3
+                        },
+                        {
+                            "name": "ASSURANCE_CONTRACT_PLEDGE",
+                            "id": 4
+                        },
+                        {
+                            "name": "ASSURANCE_CONTRACT_STUB",
+                            "id": 5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "ScryptParameters",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "salt",
+                    "id": 1
+                },
+                {
+                    "rule": "optional",
+                    "type": "int64",
+                    "name": "n",
+                    "id": 2,
+                    "options": {
+                        "default": 16384
+                    }
+                },
+                {
+                    "rule": "optional",
+                    "type": "int32",
+                    "name": "r",
+                    "id": 3,
+                    "options": {
+                        "default": 8
+                    }
+                },
+                {
+                    "rule": "optional",
+                    "type": "int32",
+                    "name": "p",
+                    "id": 4,
+                    "options": {
+                        "default": 1
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Extension",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "string",
+                    "name": "id",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "data",
+                    "id": 2
+                },
+                {
+                    "rule": "required",
+                    "type": "bool",
+                    "name": "mandatory",
+                    "id": 3
+                }
+            ]
+        },
+        {
+            "name": "Tag",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "string",
+                    "name": "tag",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "type": "bytes",
+                    "name": "data",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "TransactionSigner",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "string",
+                    "name": "class_name",
+                    "id": 1
+                },
+                {
+                    "rule": "optional",
+                    "type": "bytes",
+                    "name": "data",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Wallet",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "string",
+                    "name": "network_identifier",
+                    "id": 1
+                },
+                {
+                    "rule": "optional",
+                    "type": "bytes",
+                    "name": "last_seen_block_hash",
+                    "id": 2
+                },
+                {
+                    "rule": "optional",
+                    "type": "uint32",
+                    "name": "last_seen_block_height",
+                    "id": 12
+                },
+                {
+                    "rule": "optional",
+                    "type": "int64",
+                    "name": "last_seen_block_time_secs",
+                    "id": 14
+                },
+                {
+                    "rule": "repeated",
+                    "type": "Key",
+                    "name": "key",
+                    "id": 3
+                },
+                {
+                    "rule": "repeated",
+                    "type": "Transaction",
+                    "name": "transaction",
+                    "id": 4
+                },
+                {
+                    "rule": "repeated",
+                    "type": "Script",
+                    "name": "watched_script",
+                    "id": 15
+                },
+                {
+                    "rule": "optional",
+                    "type": "EncryptionType",
+                    "name": "encryption_type",
+                    "id": 5,
+                    "options": {
+                        "default": "UNENCRYPTED"
+                    }
+                },
+                {
+                    "rule": "optional",
+                    "type": "ScryptParameters",
+                    "name": "encryption_parameters",
+                    "id": 6
+                },
+                {
+                    "rule": "optional",
+                    "type": "int32",
+                    "name": "version",
+                    "id": 7,
+                    "options": {
+                        "default": 1
+                    }
+                },
+                {
+                    "rule": "repeated",
+                    "type": "Extension",
+                    "name": "extension",
+                    "id": 10
+                },
+                {
+                    "rule": "optional",
+                    "type": "string",
+                    "name": "description",
+                    "id": 11
+                },
+                {
+                    "rule": "optional",
+                    "type": "uint64",
+                    "name": "key_rotation_time",
+                    "id": 13
+                },
+                {
+                    "rule": "repeated",
+                    "type": "Tag",
+                    "name": "tags",
+                    "id": 16
+                },
+                {
+                    "rule": "repeated",
+                    "type": "TransactionSigner",
+                    "name": "transaction_signers",
+                    "id": 17
+                }
+            ],
+            "enums": [
+                {
+                    "name": "EncryptionType",
+                    "values": [
+                        {
+                            "name": "UNENCRYPTED",
+                            "id": 1
+                        },
+                        {
+                            "name": "ENCRYPTED_SCRYPT_AES",
+                            "id": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "ExchangeRate",
+            "fields": [
+                {
+                    "rule": "required",
+                    "type": "int64",
+                    "name": "coin_value",
+                    "id": 1
+                },
+                {
+                    "rule": "required",
+                    "type": "int64",
+                    "name": "fiat_value",
+                    "id": 2
+                },
+                {
+                    "rule": "required",
+                    "type": "string",
+                    "name": "fiat_currency_code",
+                    "id": 3
+                }
+            ]
+        }
+    ]
+}

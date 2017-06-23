@@ -66,6 +66,3 @@ fabric.properties
 /typings/
 src/**/*.js
 src/**/*.map
-*.zip
-dist
-build
