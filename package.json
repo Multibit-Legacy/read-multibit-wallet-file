@@ -7,6 +7,11 @@
     "type": "git",
     "url": "git+https://github.com/keepkey/read-multibit-wallet-file.git"
   },
+  "scripts": {
+    "patch-release": "npm version patch && npm publish && git push --follow-tags",
+    "minor-release": "npm version minor && npm publish && git push --follow-tags",
+    "major-release": "npm version major && npm publish && git push --follow-tags"
+  },
   "author": "Ken Heutmaker (bgok)",
   "license": "ISC",
   "bugs": {

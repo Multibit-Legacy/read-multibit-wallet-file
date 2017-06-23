@@ -13,13 +13,13 @@ var Wallet = require('../build/wallet').wallet.Wallet;
 var fileName;
 commander
     .version('0.0.1')
-    .arguments('<file>')
+    .arguments('<wallet-file>')
     .action(function (file) {
     fileName = file;
 });
 commander.parse(process.argv);
 if (!fileName) {
-    console.log('wallet file must be specified');
+    console.log('A wallet file must be specified');
     commander.help();
 }
 var data;

@@ -20,7 +20,7 @@ let fileName: string;
 
 commander
   .version('0.0.1')
-  .arguments('<file>')
+  .arguments('<wallet-file>')
   .action((file: string) => {
     fileName = file;
   });
@@ -28,7 +28,7 @@ commander
 commander.parse(process.argv);
 
 if (!fileName) {
-  console.log('wallet file must be specified');
+  console.log('A wallet file must be specified');
   commander.help();
 }
 

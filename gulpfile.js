@@ -19,9 +19,6 @@ let ts = require('gulp-typescript');
 
 let tsconfig = require('./tsconfig.json').compilerOptions;
 
-let versionedFiles = ['src/mbexport.ts', 'package.json'];
-let environment = args.environment || 'local';
-
 gulp.task('clean', function (cb) {
   del([
     'dist',
@@ -70,28 +67,6 @@ gulp.task('typescript', ['wallet.d.ts'], function () {
   return gulp.src(['src/**/*.ts', '!src/**/*.spec.ts'])
     .pipe(ts(tsconfig))
     .pipe(gulp.dest('build'));
-});
-
-gulp.task('cli', function() {
-
-});
-
-gulp.task('bumpPatch', function () {
-  return gulp.src(versionedFiles)
-    .pipe(bump({type: 'patch'}))
-    .pipe(gulp.dest('./'));
-});
-
-gulp.task('bumpMinor', function () {
-  return gulp.src(versionedFiles)
-    .pipe(bump({type: 'minor'}))
-    .pipe(gulp.dest('./'));
-});
-
-gulp.task('bumpMajor', function () {
-  return gulp.src(versionedFiles)
-    .pipe(bump({type: 'major'}))
-    .pipe(gulp.dest('./'));
 });
 
 gulp.task('build', ['typescript', 'protocolBuffers'], function() {
