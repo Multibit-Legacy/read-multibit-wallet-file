@@ -6,9 +6,13 @@ import * as ByteBuffer from "bytebuffer";
 import * as commander from "commander";
 import {Decrypter} from "./aes-cbc-decrypter";
 import fs =  require('fs');
-import bcoin = require("bcoin");
+let bcoin = require("bcoin");
 import Type = MultibitWallet.Key.Type;
 import ScryptParameters = MultibitWallet.ScryptParameters;
+let prompt = require('prompt');
+
+prompt.message = '';
+prompt.delimiter = '';
 
 let Wallet = require('../build/wallet').wallet.Wallet;
 
@@ -48,15 +52,15 @@ try {
 } catch (e) {
   console.log('MultibitHD wallet opened');
 
-  let iv = pb.slice(0, 16);
-  let encryptedPayload = pb.slice(16);
-  let decrypter = Decrypter.factory('foo');
-
-  walletPromise = decrypter.decrypt(encryptedPayload, iv)
+  walletPromise = getPassphrase()
+    .then((passphrase: string) => {
+      return Decrypter
+        .factory(passphrase)
+        .decrypt(pb.slice(16), pb.slice(0, 16));
+    })
     .then((payload) => {
       return Wallet.decode(payload);
     });
-
 }
 
 walletPromise.then((wallet: MultibitWallet.Wallet) => {
@@ -64,7 +68,6 @@ walletPromise.then((wallet: MultibitWallet.Wallet) => {
 
   let keys: Array<MultibitWallet.Key> = wallet.getKey();
   let keyPromises: Array<Promise<string>> = [];
-  let decrypter: Decrypter;
   let encryptionParameters = wallet.getEncryptionParameters();
 
   keys.forEach(function (key) {
@@ -113,11 +116,35 @@ function readEncryptedKey(key: MultibitWallet.Key,
   let encryptedKey = key.getEncryptedData();
   console.assert(encryptedKey, 'Encrypted key is not defined');
 
-  let iv = encryptedKey.getInitialisationVector();
-  let epk = encryptedKey.getEncryptedPrivateKey();
-
-  let decrypter = Decrypter.factory('foo', encryptionParameters);
-
-  return decrypter.decrypt(epk, iv)
+  return getPassphrase()
+    .then((passphrase: string) => {
+      return Decrypter
+        .factory(passphrase, encryptionParameters)
+        .decrypt(encryptedKey.getEncryptedPrivateKey(), encryptedKey.getInitialisationVector());
+    })
     .then(formatter);
+}
+
+let passphrase: string;
+
+function getPassphrase(): Promise<string> {
+  if (!passphrase) {
+    return new Promise((resolve, reject) => {
+      prompt.get([{
+        name   : 'passphrase',
+        description: 'Enter your passphrase:',
+        replace: '*',
+        hidden : true
+      }], (err: any, result: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          passphrase = result.passphrase;
+          resolve(passphrase);
+        }
+      });
+    });
+  } else {
+    return Promise.resolve(passphrase);
+  }
 }

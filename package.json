@@ -26,6 +26,7 @@
     "commander": "^2.9.0",
     "lodash": "^4.13.1",
     "pkcs7": "^0.2.3",
+    "prompt": "^1.0.0",
     "protobufjs": "^5.0.1",
     "scrypt-async": "^1.2.0"
   },
