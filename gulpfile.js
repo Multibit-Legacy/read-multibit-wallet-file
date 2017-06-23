@@ -1,8 +1,3 @@
-/*
- * Copyright (C) 2015-2016 KeepKey, LLC
- * All Rights Reserved
- */
-
 let args = require('yargs').argv;
 let buffer = require('vinyl-buffer');
 let chmod = require('gulp-chmod');

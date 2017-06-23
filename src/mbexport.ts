@@ -19,7 +19,7 @@ let Wallet = require('../build/wallet').wallet.Wallet;
 let fileName: string;
 
 commander
-  .version('0.0.1')
+  .version(require('../package.json').version)
   .arguments('<wallet-file>')
   .action((file: string) => {
     fileName = file;

@@ -1,11 +1,11 @@
 {
   "name": "mbexport",
   "version": "0.0.2",
-  "description": "Export the private keeys or wallet words from Multibit wallet files",
+  "description": "A utility that exports the private keys or wallet words from Multibit wallet files",
   "main": "build/mbexport",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/keepkey/read-multibit-wallet-file.git"
+    "url": "git+https://github.com/bgok/read-multibit-wallet-file.git"
   },
   "scripts": {
     "patch-release": "npm version patch && gulp build && npm publish && git push --follow-tags",
@@ -15,12 +15,12 @@
   "author": "Ken Heutmaker (bgok)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/keepkey/read-multibit-wallet-file/issues"
+    "url": "https://github.com/bgok/read-multibit-wallet-file/issues"
   },
   "bin": {
     "mbexport": "build/mbexport"
   },
-  "homepage": "https://github.com/keepkey/read-multibit-wallet-file#readme",
+  "homepage": "https://github.com/bgok/read-multibit-wallet-file",
   "dependencies": {
     "bcoin": "^1.0.0-beta.12",
     "bytebuffer": "^5.0.1",
