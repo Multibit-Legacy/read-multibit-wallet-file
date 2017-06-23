@@ -6,9 +6,9 @@ const DEFAULT_R = 8;
 const DEFAULT_P = 1;
 const DEFAULT_DERIVED_KEY_LENGTH = 32;
 
-const DEFAULT_SALT = ByteBuffer.wrap(new Uint8Array([
-  0xac, 0x35, 0x72, 0xb2, 0x47, 0xc6, 0x87, 0x32
-]));
+const DEFAULT_SALT = new Buffer([
+  0x35, 0x51, 0x03, 0x80, 0x75, 0xa3, 0xb0, 0xc5
+]);
 
 interface Math {
   log2(x: number): number;
@@ -16,7 +16,7 @@ interface Math {
 declare var Math: Math;
 
 export class ScryptEncryptionKey {
-  private salt: ByteBuffer;
+  private salt: Buffer;
   private n: number;
   private r: number;
   private p: number;
@@ -42,9 +42,8 @@ export class ScryptEncryptionKey {
     if (!this._keyPromise) {
       this._keyPromise = new Promise((resolve, reject) => {
         var pw = new Uint8Array(this.passwordBuffer.toBuffer());
-        var salt = new Uint8Array(this.salt.toBuffer());
         scrypt(
-          pw, salt,
+          pw, this.salt,
           Math.log2(this.n), this.r, this.derivedKeyLength,
           (hash: any) => {
             resolve(ByteBuffer.wrap(hash));
@@ -55,7 +54,7 @@ export class ScryptEncryptionKey {
     return this._keyPromise;
   }
 
-  constructor(private password: string, salt?: ByteBuffer,
+  constructor(private password: string, salt?: Buffer,
               n?: number, r?: number, p?: number,
               derivedKeyLength?: number) {
     this.salt = salt || DEFAULT_SALT;

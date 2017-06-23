@@ -4,14 +4,17 @@ import * as ByteBuffer from "bytebuffer";
 import {Decipher} from "crypto";
 import ScryptParameters = MultibitWallet.ScryptParameters;
 
-// var aesjs = require('aes-js');
-var pkcs7 = require('pkcs7');
-
 const FRAGMENT_SIZE = 16;
 
 export class Decrypter {
-  public static factory(passphrase: string, scryptParameters: ScryptParameters): Decrypter {
-    let key: ScryptEncryptionKey = new ScryptEncryptionKey(passphrase, scryptParameters.getSalt());
+  public static factory(passphrase: string, scryptParameters?: ScryptParameters): Decrypter {
+    let key: ScryptEncryptionKey;
+
+    if (scryptParameters) {
+      key = new ScryptEncryptionKey(passphrase, <any>(scryptParameters.salt.toBuffer()));
+    } else {
+      key = new ScryptEncryptionKey(passphrase);
+    }
     return new Decrypter(key);
   }
 

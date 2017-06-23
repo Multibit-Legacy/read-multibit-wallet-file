@@ -92,11 +92,6 @@ gulp.task('cli', function() {
 
 });
 
-gulp.task('copyAssets', function () {
-  return gulp.src('images/**/*')
-    .pipe(gulp.dest('dist/images'));
-});
-
 gulp.task('bumpPatch', function () {
   return gulp.src(versionedFiles)
     .pipe(bump({type: 'patch'}))
@@ -115,6 +110,6 @@ gulp.task('bumpMajor', function () {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('build', ['browserify', 'copyAssets']);
+gulp.task('build', ['browserify']);
 
 module.exports = gulp;

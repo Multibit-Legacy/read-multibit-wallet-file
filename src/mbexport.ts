@@ -8,6 +8,7 @@ import {Decrypter} from "./aes-cbc-decrypter";
 import fs =  require('fs');
 import bcoin = require("bcoin");
 import Type = MultibitWallet.Key.Type;
+import ScryptParameters = MultibitWallet.ScryptParameters;
 
 let Wallet = require('../build/wallet').wallet.Wallet;
 
@@ -36,63 +37,87 @@ try {
 }
 
 let pb = ByteBuffer.wrap(data);
-let wallet: MultibitWallet.Wallet;
+let walletPromise: Promise<MultibitWallet.Wallet>;
 
 try {
-  wallet = Wallet.decode(pb);
-  console.log('multibit classic wallet opened');
-  console.assert(wallet.getKey().length !== 0, 'One or more keys should exist');
+  walletPromise = Promise.resolve(Wallet.decode(pb))
+    .then((wallet) => {
+      console.log('multibit classic wallet opened');
+      return wallet;
+    });
 } catch (e) {
   console.log('MultibitHD wallet opened');
+
+  let iv = pb.slice(0, 16);
+  let encryptedPayload = pb.slice(16);
+  let decrypter = Decrypter.factory('foo');
+
+  walletPromise = decrypter.decrypt(encryptedPayload, iv)
+    .then((payload) => {
+      return Wallet.decode(payload);
+    });
+
 }
 
-let keys: Array<MultibitWallet.Key> = wallet.getKey();
-let keyPromises: Array<Promise<string>> = [];
-let decrypter: Decrypter;
+walletPromise.then((wallet: MultibitWallet.Wallet) => {
+  console.assert(wallet.getKey().length !== 0, 'One or more keys should exist');
 
-keys.forEach(function (key) {
-  switch (key.getType()) {
-    case Type.ORIGINAL:
-      console.log('Unencrypted key');
+  let keys: Array<MultibitWallet.Key> = wallet.getKey();
+  let keyPromises: Array<Promise<string>> = [];
+  let decrypter: Decrypter;
+  let encryptionParameters = wallet.getEncryptionParameters();
 
-      let secretBytes = key.getSecretBytes();
-      console.assert(secretBytes, 'Secret bytes are not defined');
+  keys.forEach(function (key) {
+    switch (key.getType()) {
+      case Type.ORIGINAL:
+        let secretBytes = key.getSecretBytes();
+        console.assert(secretBytes, 'Secret bytes are not defined');
 
-      let keyRing = bcoin.keyring.fromPrivate(secretBytes.toBuffer(), 'main');
-      keyPromises.push(Promise.resolve(keyRing.toSecret()));
+        let keyRing = bcoin.keyring.fromPrivate(secretBytes.toBuffer(), 'main');
+        keyPromises.push(Promise.resolve(keyRing.toSecret()));
+        break;
 
-      break;
-
-    case Type.ENCRYPTED_SCRYPT_AES:
-      console.log('Encrypted key');
-      let encryptedKey = key.getEncryptedData();
-      console.assert(encryptedKey, 'Encrypted key is not defined');
-
-      let encryptionParameters = wallet.getEncryptionParameters();
-      console.assert(encryptionParameters, 'Encryption parameters undefined');
-
-      let iv = encryptedKey.getInitialisationVector();
-      let epk = encryptedKey.getEncryptedPrivateKey();
-
-      if (!decrypter) {
-        decrypter = Decrypter.factory('foo', encryptionParameters);
-      }
-      var p = decrypter.decrypt(epk, iv)
-        .then((secretBytes) => {
+      case Type.ENCRYPTED_SCRYPT_AES:
+        console.assert(encryptionParameters, 'Encryption parameters undefined');
+        keyPromises.push(readEncryptedKey(key, encryptionParameters, (secretBytes) => {
           return bcoin.keyring.fromPrivate(secretBytes.toBuffer(), 'main').toSecret();
-        });
-      keyPromises.push(p);
+        }));
+        break;
 
-      break;
+      case Type.DETERMINISTIC_MNEMONIC:
+        console.assert(encryptionParameters, 'Encryption parameters undefined');
+        keyPromises.push(readEncryptedKey(key, encryptionParameters, (secretBytes) => {
+          return secretBytes.toString('utf8');
+        }));
+        break;
 
-    default:
-      throw 'Unknown key type';
-  }
+      case Type.DETERMINISTIC_KEY:
+        break;
+
+      default:
+        throw 'Unknown key type';
+    }
+  });
+
+  Promise.all(keyPromises)
+    .then((keys: Array<string>) => {
+      keys.forEach((key) => {
+        console.log(key);
+      });
+    });
 });
 
-Promise.all(keyPromises)
-  .then((keys: Array<string>) => {
-    keys.forEach((key) => {
-      console.log(key);
-    });
-  });
+function readEncryptedKey(key: MultibitWallet.Key,
+                          encryptionParameters: ScryptParameters,
+                          formatter: (bytes: ByteBuffer) => string): Promise<string> {
+  let encryptedKey = key.getEncryptedData();
+  console.assert(encryptedKey, 'Encrypted key is not defined');
+
+  let iv = encryptedKey.getInitialisationVector();
+  let epk = encryptedKey.getEncryptedPrivateKey();
+
+  let decrypter = Decrypter.factory('foo', encryptionParameters);
+
+  return decrypter.decrypt(epk, iv)
+    .then(formatter);
+}
