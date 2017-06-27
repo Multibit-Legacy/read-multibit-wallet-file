@@ -46,7 +46,7 @@ Once you figure out the name and location of your wallet file, you can
 export the keys.
 
 Exporting Your Keys
--------------------
+===================
 Open a command prompt and type the following command:
 
 ```mbexport <path-to-wallet-file>```
@@ -82,9 +82,6 @@ Importing to Electrum
 
 MultibitHD
 ==========
-
-Exporting your Keys
--------------------
 
 Importing to Electrum
 ---------------------
