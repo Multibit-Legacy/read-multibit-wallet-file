@@ -29,7 +29,7 @@ Locating your wallet file
 | Version | Wallet file location |
 |---|---|
 | **Multibit Classic** | C:\Users\\`<username>`\AppData\Roaming\MultiBit\\`<wallet-name>`.wallet |
-| **MultibitHD** | C:\Users\\`<username>`\AppData\Roaming\MultiBitHD\`<wallet-id>`\mbhd.wallet.aes |
+| **MultibitHD** | C:\Users\\`<username>`\AppData\Roaming\MultiBitHD\\`<wallet-id>`\mbhd.wallet.aes |
 
 
 `<wallet-id>` is a very long, random directory name that acts as a
@@ -66,11 +66,11 @@ for your wallet. Once you do will list any private keys and mnemonic
 seeds that it finds in the file. If you run ```mbexport``` on a
 Multibit Classic file, the output will look simliar to this:
 
-![Example output for Multibit Classic]("https://github.com/bgok/read-multibit-wallet-file/raw/master/readme-assets/classic-output.png")
+![Example output for Multibit Classic]("readme-assets/classic-output.png?raw=true")
 
 For Multibit HD, it will look like:
 
-![Example output for MultibitHD]("https://github.com/bgok/read-multibit-wallet-file/raw/master/readme-assets/hd-output.png")
+![Example output for MultibitHD]("readme-assets/hd-output.png?raw=true")
 
 
 Multibit (Classic)
