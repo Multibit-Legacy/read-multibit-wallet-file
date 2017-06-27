@@ -66,11 +66,11 @@ for your wallet. Once you do will list any private keys and mnemonic
 seeds that it finds in the file. If you run ```mbexport``` on a
 Multibit Classic file, the output will look simliar to this:
 
-![Example output for Multibit Classic]("readme-assets/classic-output.png?raw=true")
+![Example output for Multibit Classic](readme-assets/classic-output.png?raw=true)
 
 For Multibit HD, it will look like:
 
-![Example output for MultibitHD]("readme-assets/hd-output.png?raw=true")
+![Example output for MultibitHD](readme-assets/hd-output.png?raw=true)
 
 
 Multibit (Classic)
