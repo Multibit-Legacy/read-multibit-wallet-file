@@ -4,8 +4,6 @@ import * as ByteBuffer from "bytebuffer";
 import {Decipher} from "crypto";
 import ScryptParameters = MultibitWallet.ScryptParameters;
 
-const FRAGMENT_SIZE = 16;
-
 export class Decrypter {
   public static factory(passphrase: string, scryptParameters?: ScryptParameters): Decrypter {
     let key: ScryptEncryptionKey;
@@ -18,15 +16,16 @@ export class Decrypter {
     return new Decrypter(key);
   }
 
-  private constructor(private key: ScryptEncryptionKey) {
-  }
+  private constructor(private key: ScryptEncryptionKey) {}
 
   public decrypt(data: ByteBuffer, iv: ByteBuffer): Promise<ByteBuffer> {
     return this.initialize(iv)
       .then((aesCbc: Decipher) => {
+        let mainBuffer = aesCbc.update(Buffer.from(data.toBuffer()));
+        let finalBuffer = aesCbc.final();
         let decrypted: Buffer = Buffer.concat([
-          aesCbc.update(Buffer.from(data.toBuffer())),
-          aesCbc.final()
+          mainBuffer,
+          finalBuffer
         ]);
 
         return ByteBuffer.wrap(decrypted);
@@ -37,7 +36,6 @@ export class Decrypter {
     return this.key.keyPromise
       .then<Decipher>((key: ByteBuffer) => {
         return crypto.createDecipheriv('aes-256-cbc', key.toBuffer(), iv.toBuffer());
-      })
-      .catch(() => console.log('whoa. fail.'));
+      });
   }
 }

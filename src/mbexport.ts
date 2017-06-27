@@ -11,6 +11,11 @@ import Type = MultibitWallet.Key.Type;
 import ScryptParameters = MultibitWallet.ScryptParameters;
 let prompt = require('prompt');
 
+const FIXED_IV = ByteBuffer.wrap(new Uint8Array([
+  0xa3, 0x44, 0x39, 0x1f, 0x53, 0x83, 0x11, 0xb3,
+  0x29, 0x54, 0x86, 0x16, 0xc4, 0x89, 0x72, 0x3e
+]));
+
 prompt.message = '';
 prompt.delimiter = '';
 
@@ -52,14 +57,25 @@ try {
 } catch (e) {
   console.log('MultibitHD wallet opened');
 
+  let decrypter: Decrypter;
+
   walletPromise = getPassphrase()
     .then((passphrase: string) => {
-      return Decrypter
-        .factory(passphrase)
-        .decrypt(pb.slice(16), pb.slice(0, 16));
+      decrypter = Decrypter
+        .factory(passphrase);
+
+      pb.reset();
+      return decrypter.decrypt(pb.slice(16), pb.slice(0,16))
+        .then((payload) => {
+          return Wallet.decode(payload);
+        });
     })
-    .then((payload) => {
-      return Wallet.decode(payload);
+    .catch((e) => {
+      pb.reset();
+      return decrypter.decrypt(pb, FIXED_IV)
+        .then((payload) => {
+          return Wallet.decode(payload);
+        });
     });
 }
 
@@ -131,10 +147,10 @@ function getPassphrase(): Promise<string> {
   if (!passphrase) {
     return new Promise((resolve, reject) => {
       prompt.get([{
-        name   : 'passphrase',
+        name       : 'passphrase',
         description: 'Enter your passphrase:',
-        replace: '*',
-        hidden : true
+        replace    : '*',
+        hidden     : true
       }], (err: any, result: any) => {
         if (err) {
           reject(err);
