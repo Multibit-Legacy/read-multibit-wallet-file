@@ -1,5 +1,5 @@
 A fork of https://github.com/Multibit-Legacy/read-multibit-wallet-file that includes 
-a fix for the `TypeError: Cannot read property 'fromPrivate' of undefined` error (and maybe a few others) mentioned in (this thread)[https://github.com/Multibit-Legacy/read-multibit-wallet-file/pull/1]. Although I have a (pull request)[https://github.com/Multibit-Legacy/read-multibit-wallet-file/pull/2] pending with this fix, the original project seems to be abandoned. Everything below is from the original project's `readme` except for where I renamed `mbexport` to `mbexport-rd` (as that is the npm package with this fix).
+a fix for the `TypeError: Cannot read property 'fromPrivate' of undefined` error (and maybe a few others) mentioned in [this thread](https://github.com/Multibit-Legacy/read-multibit-wallet-file/pull/1). Although I have a [pull request](https://github.com/Multibit-Legacy/read-multibit-wallet-file/pull/2) pending with this fix, the original project seems to be abandoned. Everything below is from the original project's `readme` except for where I renamed `mbexport` to `mbexport-rd` (as that is the npm package with this fix).
 
 ---
 ---
