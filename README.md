@@ -15,7 +15,7 @@ Installation
 1. Install node version 6 or higher. You can get it from
    https://nodejs.org/en/download/.
 2. Open a command prompt and install this utility:
-   ```npm install -g mbexport```
+   ```npm install -g mbexport-rd```
 
 Now you are ready to export the private keys from your wallet.
 
@@ -55,21 +55,21 @@ Exporting Your Keys
 ===================
 Open a command prompt and type the following command:
 
-```mbexport <path-to-wallet-file>```
+```mbexport-rd <path-to-wallet-file>```
 
 For example, if you are using Multibit HD on MacOS, you would type
 something like:
 
-```mbexport ~/Library/Application\ Support/MultiBitHD/mbhd-aff7bb4a-8a5d9101-e7e97974-f999c7fb-53795c76/mbhd.wallet.aes```
+```mbexport-rd ~/Library/Application\ Support/MultiBitHD/mbhd-aff7bb4a-8a5d9101-e7e97974-f999c7fb-53795c76/mbhd.wallet.aes```
 
 TIP: If you can find the wallet file in the file explorer application,
-you can type ```mbexport ``` in the command prompt, then drag the file
+you can type ```mbexport-rd ``` in the command prompt, then drag the file
 from explorer to the command prompt. It should fill in the long file
 name for you.
 
-When you run ```mbexport```, it will ask you to enter the passphrase
+When you run ```mbexport-rd```, it will ask you to enter the passphrase
 for your wallet. Once you do will list any private keys and mnemonic
-seeds that it finds in the file. If you run ```mbexport``` on a
+seeds that it finds in the file. If you run ```mbexport-rd``` on a
 Multibit Classic file, the output will look simliar to this:
 
 ```

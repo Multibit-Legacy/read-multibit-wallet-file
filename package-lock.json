@@ -1,6 +1,6 @@
 {
-  "name": "mbexport",
-  "version": "0.0.7",
+  "name": "mbexport-rd",
+  "version": "0.0.2",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {

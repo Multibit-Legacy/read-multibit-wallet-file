@@ -1,26 +1,24 @@
 {
-  "name": "mbexport",
-  "version": "0.0.7",
-  "description": "A utility that exports the private keys or wallet words from Multibit wallet files",
+  "name": "mbexport-rd",
+  "version": "0.0.2",
+  "description": "Version of mbexport (A utility that exports the private keys or wallet words from Multibit wallet files) with its dependencies locked to the versions that are known to work",
   "main": "build/mbexport",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bgok/read-multibit-wallet-file.git"
+    "url": "git+https://github.com/DavidKDeutsch/read-multibit-wallet-file.git"
   },
   "scripts": {
     "patch-release": "npm version patch && gulp build && npm publish && git push --follow-tags",
     "minor-release": "npm version minor && gulp build && npm publish && git push --follow-tags",
     "major-release": "npm version major && gulp build && npm publish && git push --follow-tags"
   },
-  "author": "Ken Heutmaker (bgok)",
+  "author": "David Deutsch (http://reverenddave.com)",
+  "contributors": ["Ken Heutmaker (bgok)"],
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bgok/read-multibit-wallet-file/issues"
-  },
   "bin": {
-    "mbexport": "build/mbexport"
+    "mbexport-rd": "build/mbexport"
   },
-  "homepage": "https://github.com/bgok/read-multibit-wallet-file",
+  "homepage": "https://github.com/DavidKDeutsch/read-multibit-wallet-file",
   "dependencies": {
     "bcoin": "^1.0.0-beta.12",
     "bytebuffer": "^5.0.1",
