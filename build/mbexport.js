@@ -7,6 +7,10 @@ var aes_cbc_decrypter_1 = require("./aes-cbc-decrypter");
 var fs = require("fs");
 var bcoin = require("bcoin");
 var prompt = require('prompt');
+var FIXED_IV = ByteBuffer.wrap(new Uint8Array([
+    0xa3, 0x44, 0x39, 0x1f, 0x53, 0x83, 0x11, 0xb3,
+    0x29, 0x54, 0x86, 0x16, 0xc4, 0x89, 0x72, 0x3e
+]));
 prompt.message = '';
 prompt.delimiter = '';
 var Wallet = require('../build/wallet').wallet.Wallet;
@@ -41,14 +45,23 @@ try {
 }
 catch (e) {
     console.log('MultibitHD wallet opened');
+    var decrypter_1;
     walletPromise = getPassphrase()
         .then(function (passphrase) {
-        return aes_cbc_decrypter_1.Decrypter
-            .factory(passphrase)
-            .decrypt(pb.slice(16), pb.slice(0, 16));
+        decrypter_1 = aes_cbc_decrypter_1.Decrypter
+            .factory(passphrase);
+        pb.reset();
+        return decrypter_1.decrypt(pb.slice(16), pb.slice(0, 16))
+            .then(function (payload) {
+            return Wallet.decode(payload);
+        });
     })
-        .then(function (payload) {
-        return Wallet.decode(payload);
+        .catch(function (e) {
+        pb.reset();
+        return decrypter_1.decrypt(pb, FIXED_IV)
+            .then(function (payload) {
+            return Wallet.decode(payload);
+        });
     });
 }
 walletPromise.then(function (wallet) {

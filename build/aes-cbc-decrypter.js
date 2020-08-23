@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var scrypt_encryption_key_1 = require("./scrypt-encryption-key");
 var crypto = require("crypto");
 var ByteBuffer = require("bytebuffer");
-var FRAGMENT_SIZE = 16;
 var Decrypter = (function () {
     function Decrypter(key) {
         this.key = key;
@@ -21,9 +20,11 @@ var Decrypter = (function () {
     Decrypter.prototype.decrypt = function (data, iv) {
         return this.initialize(iv)
             .then(function (aesCbc) {
+            var mainBuffer = aesCbc.update(Buffer.from(data.toBuffer()));
+            var finalBuffer = aesCbc.final();
             var decrypted = Buffer.concat([
-                aesCbc.update(Buffer.from(data.toBuffer())),
-                aesCbc.final()
+                mainBuffer,
+                finalBuffer
             ]);
             return ByteBuffer.wrap(decrypted);
         });
@@ -32,8 +33,7 @@ var Decrypter = (function () {
         return this.key.keyPromise
             .then(function (key) {
             return crypto.createDecipheriv('aes-256-cbc', key.toBuffer(), iv.toBuffer());
-        })
-            .catch(function () { return console.log('whoa. fail.'); });
+        });
     };
     return Decrypter;
 }());
