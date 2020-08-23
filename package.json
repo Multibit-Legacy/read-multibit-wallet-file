@@ -2,7 +2,7 @@
   "name": "mbexport-rd",
   "version": "0.0.8",
   "description": "Version of mbexport (A utility that exports the private keys or wallet words from Multibit wallet files) with its dependencies locked to the versions that are known to work",
-  "main": "build/mbexport",
+  "main": "build/mbexport-rd",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DavidKDeutsch/read-multibit-wallet-file.git"
@@ -18,7 +18,7 @@
   ],
   "license": "MIT",
   "bin": {
-    "mbexport-rd": "build/mbexport"
+    "mbexport-rd": "build/mbexport-rd"
   },
   "homepage": "https://github.com/DavidKDeutsch/read-multibit-wallet-file",
   "dependencies": {
