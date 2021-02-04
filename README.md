@@ -1,3 +1,11 @@
+Preface
+============
+This is a fork of https://github.com/Multibit-Legacy/read-multibit-wallet-file that includes 
+a fix for the `TypeError: Cannot read property 'fromPrivate' of undefined` error (and maybe a few others) mentioned in [this thread](https://github.com/Multibit-Legacy/read-multibit-wallet-file/pull/1). Although I have a [pull request](https://github.com/Multibit-Legacy/read-multibit-wallet-file/pull/2) pending with this fix, the original project seems to be abandoned. Everything below is from the original project's `readme` except for where I renamed `mbexport` to `mbexport-rd` (as that is the npm package with this fix).
+
+---
+---
+
 A simple command line tool that exports the private Keys from a Multibit
 wallet file. The reason this tool exists is because Multibit is out of
 date and has known bugs. Exporting the private keys or wallet words from
@@ -9,7 +17,7 @@ Installation
 1. Install node version 6 or higher. You can get it from
    https://nodejs.org/en/download/.
 2. Open a command prompt and install this utility:
-   ```npm install -g mbexport```
+   ```npm install -g mbexport-rd```
 
 Now you are ready to export the private keys from your wallet.
 
@@ -49,21 +57,21 @@ Exporting Your Keys
 ===================
 Open a command prompt and type the following command:
 
-```mbexport <path-to-wallet-file>```
+```mbexport-rd <path-to-wallet-file>```
 
 For example, if you are using Multibit HD on MacOS, you would type
 something like:
 
-```mbexport ~/Library/Application\ Support/MultiBitHD/mbhd-aff7bb4a-8a5d9101-e7e97974-f999c7fb-53795c76/mbhd.wallet.aes```
+```mbexport-rd ~/Library/Application\ Support/MultiBitHD/mbhd-aff7bb4a-8a5d9101-e7e97974-f999c7fb-53795c76/mbhd.wallet.aes```
 
 TIP: If you can find the wallet file in the file explorer application,
-you can type ```mbexport ``` in the command prompt, then drag the file
+you can type ```mbexport-rd ``` in the command prompt, then drag the file
 from explorer to the command prompt. It should fill in the long file
 name for you.
 
-When you run ```mbexport```, it will ask you to enter the passphrase
+When you run ```mbexport-rd```, it will ask you to enter the passphrase
 for your wallet. Once you do will list any private keys and mnemonic
-seeds that it finds in the file. If you run ```mbexport``` on a
+seeds that it finds in the file. If you run ```mbexport-rd``` on a
 Multibit Classic file, the output will look simliar to this:
 
 ```
@@ -81,24 +89,6 @@ Enter your passphrase: ***
 
 measure swim globe radio reunion awful reflect tail produce treat cluster spot
 ```
-
-Multibit (Classic)
-==================
-
-Importing to Electrum
----------------------
-Details coming soon
-
-MultibitHD
-==========
-
-Importing to Electrum
----------------------
-Details coming soon
-
-Importing to Bread Wallet
--------------------------
-Details coming soon
 
 
 ````

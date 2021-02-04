@@ -67,7 +67,7 @@ gulp.task('typescript', ['wallet.d.ts'], function () {
 gulp.task('build', ['typescript', 'protocolBuffers'], function() {
   return gulp.src('build/mbexport.js')
     .pipe(chmod(0o755))
-    .pipe(rename('mbexport'))
+    .pipe(rename('mbexport-rd'))
     .pipe(gulp.dest('build'));
 });
 
